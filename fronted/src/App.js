@@ -6,7 +6,10 @@ import './App.css'
 import './Sidebar.css'
 import './Main.css'
 
+import DevItem from './components/DevItem';
+
 function App() {
+  const [devs, setDevs] = useState([]); // Declarando um array vazio
   const [github_username, setGithubUsername] = useState('');
   const [techs, setTechs] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -27,7 +30,17 @@ function App() {
         timeout: 30000
       }
     )
-  });
+  }, []);
+
+  useEffect(() => {
+    async function loadDevs() { // Declara uma funcao para carregar os devs
+      const response = await api.get('/devs');
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
 
   async function handleAddDev(e) {
     e.preventDefault();
@@ -41,13 +54,15 @@ function App() {
 
     setGithubUsername('');
     setTechs('');
+
+    setDevs([...devs, response.data]); // Cria um array com o valor de devs e adiciona recem cadastrado
   }
 
   return (
     <div id="app">
       <aside>
         <strong>Cadastrar</strong>
-        <form>
+        <form onSubmit={handleAddDev}>
           <div className="input-block">
             <label htmlFor="github_username">Usuário do Github</label>
             <input name="github_username" id="github_username" required value={github_username}
@@ -79,50 +94,9 @@ function App() {
       </aside>
       <main>
         <ul>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars2.githubusercontent.com/u/290037?s=460&v=4" alt="Elvis Carvalho Souza" />
-              <div className="user-info">
-                <strong>Elvis Carvalho Souza</strong>
-                <span>ReactJs, React Native, Node.js, Java, Php, C#</span>
-              </div>
-            </header>
-            <p>Analista de Inovação Digital. Desenvolvedor a mais de dez anos, apaixonado por inovação, construindo sistemas nas mais diversas tecnologias do mercado.</p>
-            <a href="https://github.com/elvismariel">Acessar perfil no Github</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars2.githubusercontent.com/u/290037?s=460&v=4" alt="Elvis Carvalho Souza" />
-              <div className="user-info">
-                <strong>Elvis Carvalho Souza</strong>
-                <span>ReactJs, React Native, Node.js, Java, Php, C#</span>
-              </div>
-            </header>
-            <p>Analista de Inovação Digital. Desenvolvedor a mais de dez anos, apaixonado por inovação, construindo sistemas nas mais diversas tecnologias do mercado.</p>
-            <a href="https://github.com/elvismariel">Acessar perfil no Github</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars2.githubusercontent.com/u/290037?s=460&v=4" alt="Elvis Carvalho Souza" />
-              <div className="user-info">
-                <strong>Elvis Carvalho Souza</strong>
-                <span>ReactJs, React Native, Node.js, Java, Php, C#</span>
-              </div>
-            </header>
-            <p>Analista de Inovação Digital. Desenvolvedor a mais de dez anos, apaixonado por inovação, construindo sistemas nas mais diversas tecnologias do mercado.</p>
-            <a href="https://github.com/elvismariel">Acessar perfil no Github</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars2.githubusercontent.com/u/290037?s=460&v=4" alt="Elvis Carvalho Souza" />
-              <div className="user-info">
-                <strong>Elvis Carvalho Souza</strong>
-                <span>ReactJs, React Native, Node.js, Java, Php, C#</span>
-              </div>
-            </header>
-            <p>Analista de Inovação Digital. Desenvolvedor a mais de dez anos, apaixonado por inovação, construindo sistemas nas mais diversas tecnologias do mercado.</p>
-            <a href="https://github.com/elvismariel">Acessar perfil no Github</a>
-          </li>
+          {devs.map(dev => (
+            <DevItem key={dev._id} dev={dev} />
+          ))}
         </ul>
       </main>
     </div>
