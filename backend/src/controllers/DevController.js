@@ -30,11 +30,25 @@ module.exports = {
         }
         return response.send(dev);
     },
-    async update(){
-        // Nome, Avatar, Bio, Localizacao, Techs
+    async update(request, response) {
+        const { github_username, techs, latitude, longitude } = request.body;
+        let dev = await Dev.findOne({github_username});
 
+        if(dev) {
+            const techsArray = parseStringAsArray(techs);
+            const location = {type: "Point", coordinates: [longitude, latitude]};
+            const newDev = {avatar_url: dev.avatar_url, bio: dev.bio, techs: techsArray, location};
+
+            dev = await Dev.updateOne({github_username}, newDev);
+        }
+
+        return response.send(dev);
     },
-    async destroy(){
+    async destroy(request, response) {
+        const { github_username } = request.query;
+        
+        const dev = await Dev.deleteOne({github_username});
 
+        return response.send(dev);
     }
 };
