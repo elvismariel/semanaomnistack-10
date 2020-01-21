@@ -49,3 +49,18 @@ li.dev-item a {
 li.dev-item a:hover {
     color: #5a2ea6;
 }
+
+li.dev-item button {
+    width: 50px;
+    border: 0;
+    margin: 0px 2px;
+    background: #7d40e7;
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #FFF;
+    cursor: pointer;
+    transition: background 0.5s;
+    float: right;
+}

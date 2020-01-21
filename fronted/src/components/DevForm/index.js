@@ -8,25 +8,23 @@ function DevForm({ onSubmit }) {
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+          (position) => {
             const { latitude, longitude } = position.coords;
 
             setLatitude(latitude);
             setLongitude(longitude);
-            },
-            (err) => {
+          },(err) => {
             console.log(err);
-            },
-            {
+          },{
             timeout: 30000
-            }
+          }
         )
     }, []);
 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await onSubmit({github_username,techs,latitude,longitude});
+        await onSubmit({ github_username, techs, latitude, longitude });
 
         setGithubUsername('');
         setTechs('');

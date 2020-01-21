@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     async function loadDevs() { // Declara uma funcao para carregar os devs
       const response = await api.get('/devs');
-
       setDevs(response.data);
     }
 
@@ -28,6 +27,19 @@ function App() {
     setDevs([...devs, response.data]); // Cria um array com o valor de devs e adiciona recem cadastrado
   }
 
+  async function handleDelDev(dev) {
+    await api.delete(`/devs?github_username=${dev.github_username}`);
+    
+    setDevs([...devs.filter(item => item.github_username !== dev.github_username)]);
+  }
+
+  async function handleAlterDev(dev) {
+    document.getElementById("github_username").value = dev.github_username;
+    document.getElementById("techs").value = dev.techs;
+    document.getElementById("latitude").value = dev.location.coordinates[0];
+    document.getElementById("longitude").value = dev.location.coordinates[1];
+  }
+
   return (
     <div id="app">
       <aside>
@@ -37,7 +49,7 @@ function App() {
       <main>
         <ul>
           {devs.map(dev => (
-            <DevItem key={dev._id} dev={dev} />
+            <DevItem key={dev._id} dev={dev} del={handleDelDev} alter={handleAlterDev} />
           ))}
         </ul>
       </main>
