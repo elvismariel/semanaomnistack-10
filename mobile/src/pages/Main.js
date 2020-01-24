@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps'; 
+import { StyleSheet, Image, View, Text } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps'; 
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 
 function Main() {
@@ -37,6 +37,13 @@ function Main() {
         <MapView initialRegion={currentRegion} style={styles.map}>
             <Marker coordinate={{ latitude: -23.6037343, longitude: -46.7799367}}>
                 <Image style={styles.avatar} source={{ uri: 'https://avatars2.githubusercontent.com/u/290037?s=460&v=4' }} />
+                <Callout>
+                    <View style={styles.callout}>
+                        <Text style={styles.devName}>Elvis Carvalho</Text>
+                        <Text style={styles.devBio}>Analista de Inovação Digital. Desenvolvedor a mais de dez anos, apaixonado por inovação, construindo sistemas nas mais diversas tecnologias do mercado.</Text>
+                        <Text style={styles.devTechs}>Java, Javascript, Node Js, C#</Text>
+                    </View>
+                </Callout>
             </Marker>
         </MapView>
     );
@@ -52,6 +59,20 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 4,
         borderColor: '#FFF'
+    },
+    callout: {
+        width: 260
+    },
+    devName: {
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    devBio: {
+        color: '#666',
+        marginTop: 5
+    },
+    devTechs: {
+        marginTop: 5
     }
 });
 
